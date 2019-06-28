@@ -1,8 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mesbro/Model/app_data.dart';
+import 'package:mesbro/Model/app_methods.dart';
+import 'package:mesbro/Model/app_tools.dart';
 import 'package:mesbro/Model/categoryModel.dart';
+import 'package:mesbro/Model/firebase_methods.dart';
 import 'package:mesbro/Model/productModel.dart';
+import 'package:mesbro/UI/login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Widgets/custom_shape.dart';
 import 'Widgets/mainui_customcard.dart';
@@ -13,6 +20,31 @@ class MainUI extends StatefulWidget {
 }
 
 class _MainUIState extends State<MainUI> {
+    String acctName = "";
+  String acctEmail = "";
+  String acctPhotoURL = "";
+  bool isLoggedIn;
+  AppMethods appMethods = new FirebaseMethods();
+
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   getCurrentUser();
+  //   super.initState();
+  // }
+
+  Future getCurrentUser() async {
+    acctName = await getStringDataLocally(key: acctFullName);
+    acctEmail = await getStringDataLocally(key: userEmail);
+    acctPhotoURL = await getStringDataLocally(key: photoURL);
+    isLoggedIn = await getBoolDataLocally(key: loggedIN);
+    //print(await getStringDataLocally(key: userEmail));
+    acctName == null ? acctName = "Guest User" : acctName;
+    acctEmail == null ? acctEmail = "guestUser@email.com" : acctEmail;
+    setState(() {});
+  }
+
+
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
   bool isExpanded = false;
@@ -22,8 +54,9 @@ class _MainUIState extends State<MainUI> {
   List<Product> dealsListItems;
   double _height;
   double _width;
-  @override
+ @override
   void initState() {
+    getCurrentUser();
     // TODO: implement initState
     super.initState();
     trendingListItems = [
@@ -228,7 +261,10 @@ class _MainUIState extends State<MainUI> {
         elevation: 9,
         onPressed: () {},
         backgroundColor: Colors.white,
-        icon: Icon(Icons.data_usage, color: Colors.black,),
+        icon: Icon(
+          Icons.data_usage,
+          color: Colors.black,
+        ),
         label: Text(
           "Data",
           textAlign: TextAlign.center,
@@ -342,26 +378,36 @@ class _MainUIState extends State<MainUI> {
           Opacity(
             opacity: 0.75,
             child: Container(
-              height: _height / 6,
+              height: _height / 5,
               padding: EdgeInsets.only(top: _height / 20),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [Colors.orange[200], Colors.pinkAccent],
                 ),
               ),
+
+              // child: UserAccountsDrawerHeader(
+              //   accountName: new Text(acctName),
+              //   accountEmail: new Text(acctEmail),
+              //   currentAccountPicture: new CircleAvatar(
+              //     backgroundColor: Colors.white,
+              //     child: new Icon(Icons.person),
+              //   ),
+              // ),
               child: ListTile(
                 leading: CircleAvatar(
                   child: Icon(
                     Icons.person,
-                    size: 40,
+                    size: 45,
                     color: Colors.black,
                   ),
-                  radius: 30,
+                  radius: 40,
+                  
                   backgroundColor: Colors.white,
                 ),
-                title: Text("FlutterDevs"),
+                title: Text(acctName),
                 subtitle: Text(
-                  "flutterDevs@aeologic.com",
+                  acctEmail,
                   style: TextStyle(fontSize: 13),
                 ),
                 trailing: Icon(
@@ -375,9 +421,25 @@ class _MainUIState extends State<MainUI> {
             leading: Icon(Icons.payment),
             title: Text("Orders & Payments"),
           ),
+          
+          ListTile(
+            leading: Icon(Icons.account_box),
+            title: new Text(isLoggedIn == true ? "Logout" : "Login") ,
+            onTap: checkIfLoggedIn,
+          )
         ],
       ),
     );
+  }
+    checkIfLoggedIn() async {
+    if (isLoggedIn == false) {
+      bool response = await Navigator.of(context).push(new CupertinoPageRoute(
+          builder: (BuildContext context) => new MesbroLogin()));
+      if (response == true) getCurrentUser();
+      return;
+    }
+    bool response = await appMethods.logOutUser();
+    if (response == true) getCurrentUser();
   }
 
   Widget _bottomNavBar() {
@@ -881,7 +943,7 @@ class _MainUIState extends State<MainUI> {
             Column(
               children: <Widget>[
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     print('Share');
                   },
                   child: Icon(

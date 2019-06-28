@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "332524108261",
+    "firebase_url": "https://mesbro-d0840.firebaseio.com",
+    "project_id": "mesbro-d0840",
+    "storage_bucket": "mesbro-d0840.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:332524108261:android:4a00c1ffe2ecfab0",
+        "android_client_info": {
+          "package_name": "com.example.mesbro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "332524108261-aaljggim675thvshfihtusm2scgb18nq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mesbro",
+            "certificate_hash": "e07f914ae97de73078a9e75e1657c73716a8488d"
+          }
+        },
+        {
+          "client_id": "332524108261-ps1vn5295d3r0sc1kjutft6d1nl1m3uk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTvnwVeohl90R_rLIEMXn76WA8XiTPWxU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "332524108261-ps1vn5295d3r0sc1kjutft6d1nl1m3uk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
