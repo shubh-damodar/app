@@ -20,7 +20,7 @@ class MainUI extends StatefulWidget {
 }
 
 class _MainUIState extends State<MainUI> {
-    String acctName = "";
+  String acctName = "";
   String acctEmail = "";
   String acctPhotoURL = "";
   bool isLoggedIn;
@@ -44,7 +44,6 @@ class _MainUIState extends State<MainUI> {
     setState(() {});
   }
 
-
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
   bool isExpanded = false;
@@ -54,7 +53,7 @@ class _MainUIState extends State<MainUI> {
   List<Product> dealsListItems;
   double _height;
   double _width;
- @override
+  @override
   void initState() {
     getCurrentUser();
     // TODO: implement initState
@@ -378,60 +377,59 @@ class _MainUIState extends State<MainUI> {
           Opacity(
             opacity: 0.75,
             child: Container(
-              height: _height / 5,
-              padding: EdgeInsets.only(top: _height / 20),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.orange[200], Colors.pinkAccent],
+              height: _height / 3,
+              padding: EdgeInsets.only(top: _height / 15),
+
+              child: UserAccountsDrawerHeader(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Colors.white, Colors.white],
+                  ),
+                ),
+                accountName: new Text(acctName),
+                accountEmail: new Text(acctEmail),
+                currentAccountPicture: new CircleAvatar(
+                  backgroundColor: Colors.black54,
+                  child: new Icon(Icons.person, color: Colors.white,),
                 ),
               ),
-
-              // child: UserAccountsDrawerHeader(
-              //   accountName: new Text(acctName),
-              //   accountEmail: new Text(acctEmail),
-              //   currentAccountPicture: new CircleAvatar(
+              // child: ListTile(
+              //   leading: CircleAvatar(
+              //     child: Icon(
+              //       Icons.person,
+              //       size: 45,
+              //       color: Colors.black,
+              //     ),
+              //     radius: 40,
               //     backgroundColor: Colors.white,
-              //     child: new Icon(Icons.person),
+              //   ),
+              //   title: Text(acctName),
+              //   subtitle: Text(
+              //     acctEmail,
+              //     style: TextStyle(fontSize: 13),
+              //   ),
+              //   trailing: Icon(
+              //     Icons.arrow_forward_ios,
+              //     color: Colors.black,
               //   ),
               // ),
-              child: ListTile(
-                leading: CircleAvatar(
-                  child: Icon(
-                    Icons.person,
-                    size: 45,
-                    color: Colors.black,
-                  ),
-                  radius: 40,
-                  
-                  backgroundColor: Colors.white,
-                ),
-                title: Text(acctName),
-                subtitle: Text(
-                  acctEmail,
-                  style: TextStyle(fontSize: 13),
-                ),
-                trailing: Icon(
-                  Icons.arrow_forward_ios,
-                  color: Colors.black,
-                ),
-              ),
             ),
           ),
           ListTile(
             leading: Icon(Icons.payment),
             title: Text("Orders & Payments"),
           ),
-          
           ListTile(
             leading: Icon(Icons.account_box),
-            title: new Text(isLoggedIn == true ? "Logout" : "Login") ,
+            title: new Text(isLoggedIn == true ? "Logout" : "Login"),
             onTap: checkIfLoggedIn,
           )
         ],
       ),
     );
   }
-    checkIfLoggedIn() async {
+
+  checkIfLoggedIn() async {
     if (isLoggedIn == false) {
       bool response = await Navigator.of(context).push(new CupertinoPageRoute(
           builder: (BuildContext context) => new MesbroLogin()));
